@@ -1,0 +1,681 @@
+:root {
+  color-scheme: light;
+  --font: ui-rounded, 'SF Pro Rounded', 'Arial Rounded MT Bold', system-ui, -apple-system, sans-serif;
+  --ink: #263238;
+  --pad-t: max(14px, env(safe-area-inset-top, 0px));
+  --pad-r: max(16px, env(safe-area-inset-right, 0px));
+  --pad-b: max(14px, env(safe-area-inset-bottom, 0px));
+  --pad-l: max(16px, env(safe-area-inset-left, 0px));
+}
+
+/* Nada rola, nada é selecionável, sem menus de toque longo. */
+html,
+body {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #00897b;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--ink);
+  touch-action: none;
+}
+
+#app {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- telas e temas por mundo ---------- */
+
+.screen {
+  --bg-top: #00897b;
+  --bg-bottom: #80cbc4;
+  --accent: #00796b;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  padding: var(--pad-t) var(--pad-r) var(--pad-b) var(--pad-l);
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  overflow: hidden;
+}
+
+.screen[data-world='1'] {
+  --bg-top: #3949ab;
+  --bg-bottom: #9fa8da;
+  --accent: #283593;
+}
+
+.screen[data-world='2'] {
+  --bg-top: #8e24aa;
+  --bg-bottom: #ce93d8;
+  --accent: #6a1b9a;
+}
+
+/* ---------- botões ---------- */
+
+.btn {
+  --size: clamp(64px, 11vmin, 92px);
+  --face: #ffffff;
+  --edge: rgba(0, 0, 0, 0.2);
+  --icon: var(--accent);
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 30%;
+  background: var(--face);
+  color: var(--icon);
+  box-shadow: 0 6px 0 var(--edge), 0 10px 18px rgba(0, 0, 0, 0.15);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.btn:active {
+  transform: translateY(4px) scale(0.96);
+  box-shadow: 0 2px 0 var(--edge), 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn svg {
+  display: block;
+  width: 56%;
+  height: 56%;
+  pointer-events: none;
+}
+
+.btn.big {
+  --size: clamp(120px, 24vmin, 190px);
+  --face: #43a047;
+  --edge: #2e7d32;
+  --icon: #ffffff;
+  border-radius: 50%;
+  animation: breathe 1.4s ease-in-out infinite;
+}
+
+.btn.big:active {
+  animation: none;
+}
+
+.btn.big svg {
+  width: 50%;
+  height: 50%;
+}
+
+.btn.play svg {
+  transform: translateX(6%);
+}
+
+.btn.small {
+  --size: clamp(56px, 9vmin, 76px);
+}
+
+.btn.hint {
+  --face: #ffeb3b;
+  --edge: #f9a825;
+  --icon: #f57f17;
+}
+
+.btn.off {
+  --icon: #90a4ae;
+}
+
+@keyframes breathe {
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+/* ---------- tela inicial ---------- */
+
+.home {
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 2vmin;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  color: #ffffff;
+  font-weight: 900;
+  font-size: clamp(40px, 9vmin, 96px);
+  line-height: 1;
+  text-shadow: 0 5px 0 #00695c, 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
+.title span {
+  display: block;
+  color: #ffeb3b;
+  text-shadow: 0 5px 0 #f57f17, 0 10px 22px rgba(0, 0, 0, 0.2);
+}
+
+.hero {
+  width: min(84vw, 58vh);
+}
+
+.hero-btn {
+  appearance: none;
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.hero svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero .hero-tube:nth-of-type(odd) {
+  animation: sway 2.4s ease-in-out infinite alternate;
+}
+
+.hero .hero-tube {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: sway 2s ease-in-out infinite alternate-reverse;
+}
+
+.hero .bubble {
+  transform-box: fill-box;
+  animation: bubble 2.2s ease-in infinite;
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-2.5deg);
+  }
+  to {
+    transform: rotate(2.5deg);
+  }
+}
+
+@keyframes bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-150px);
+    opacity: 0;
+  }
+}
+
+.home-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 5vmin, 48px);
+}
+
+/* ---------- mapa de fases ---------- */
+
+.map {
+  flex-direction: column;
+  gap: 2vmin;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.map-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  container-type: size;
+  padding: 8px;
+}
+
+.map-grid {
+  --side: min(100cqw, 100cqh);
+  width: var(--side);
+  height: var(--side);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: calc(var(--side) * 0.028);
+}
+
+.tile {
+  --t: #ffca28;
+  --t-edge: #f9a825;
+  --t-ink: #5d4037;
+  appearance: none;
+  position: relative;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 900;
+  font-size: calc(var(--side) / 6 * 0.42);
+  color: var(--t-ink);
+  background: var(--t);
+  border-radius: 24%;
+  box-shadow: 0 5px 0 var(--t-edge);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.tile[data-world='1'] {
+  --t: #42a5f5;
+  --t-edge: #1565c0;
+  --t-ink: #ffffff;
+}
+
+.tile[data-world='2'] {
+  --t: #ab47bc;
+  --t-edge: #7b1fa2;
+  --t-ink: #ffffff;
+}
+
+.tile:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--t-edge);
+}
+
+.tile .num {
+  pointer-events: none;
+}
+
+.tile .sticker {
+  position: absolute;
+  top: -8%;
+  right: -8%;
+  width: 42%;
+  height: 42%;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #43a047;
+  display: none;
+  place-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.tile .sticker svg {
+  width: 68%;
+  height: 68%;
+}
+
+.tile.done .sticker {
+  display: grid;
+}
+
+.tile.next {
+  outline: 4px solid #ffffff;
+  outline-offset: 3px;
+  animation: breathe 1.1s ease-in-out infinite;
+}
+
+/* ---------- fase ---------- */
+
+.game {
+  flex-direction: column;
+  gap: 2vmin;
+}
+
+.game .rack-wrap {
+  order: 1;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+
+.game .controls {
+  order: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 4vmin, 40px);
+}
+
+@media (orientation: landscape) {
+  .game {
+    flex-direction: row;
+  }
+
+  .game .controls {
+    order: 0;
+    flex-direction: column;
+  }
+}
+
+.badge {
+  --size: clamp(56px, 9vmin, 76px);
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: calc(var(--size) * 0.46);
+  color: #ffffff;
+  background: var(--accent);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- estante de garrafinhas ---------- */
+
+.rack-wrap {
+  position: relative;
+  container-type: size;
+}
+
+.rack {
+  --tw: 80px;
+  --th: 300px;
+  --cap: 4;
+  --glass: calc(var(--tw) * 0.07);
+  --radius: calc(var(--tw) * 0.42);
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+.tube {
+  position: absolute;
+  width: var(--tw);
+  height: var(--th);
+  z-index: 1;
+  transform-origin: 50% 0;
+  transition: transform 0.16s ease-out;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.tube.selected {
+  z-index: 3;
+  transform: translateY(calc(var(--tw) * -0.6));
+}
+
+.tube.dragging {
+  z-index: 6;
+  transition: none;
+}
+
+.tube.pouring {
+  z-index: 6;
+  transition: none;
+}
+
+.bottle {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+}
+
+.glass {
+  position: absolute;
+  inset: 0;
+  border: var(--glass) solid rgba(255, 255, 255, 0.95);
+  border-top: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Borda da boca. */
+.glass::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--glass) * -2);
+  right: calc(var(--glass) * -2);
+  top: calc(var(--glass) * -0.6);
+  height: calc(var(--glass) * 1.6);
+  border-radius: 999px;
+  background: #ffffff;
+  z-index: 2;
+}
+
+/* Brilho do vidro. */
+.glass::after {
+  content: '';
+  position: absolute;
+  left: 14%;
+  width: 11%;
+  top: 14%;
+  bottom: 16%;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+  z-index: 2;
+}
+
+.liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(var(--tw) * 0.9 * var(--cap));
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+  border-radius: 0 0 calc(var(--radius) - var(--glass)) calc(var(--radius) - var(--glass));
+}
+
+.layer {
+  flex: none;
+  background-color: var(--c);
+  background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.16) 62%, rgba(0, 0, 0, 0.08));
+}
+
+/* Superfície do líquido um pouco mais clara. */
+.layer:last-child {
+  box-shadow: inset 0 calc(var(--tw) * 0.07) 0 rgba(255, 255, 255, 0.3);
+}
+
+.cork {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--tw) * -0.32);
+  width: 64%;
+  height: calc(var(--tw) * 0.42);
+  transform: translate(-50%, 0);
+  border-radius: calc(var(--tw) * 0.12);
+  background: #a1887f;
+  border: calc(var(--tw) * 0.05) solid #6d4c41;
+  box-shadow: inset 0 calc(var(--tw) * -0.06) 0 rgba(0, 0, 0, 0.15);
+  z-index: 3;
+  display: none;
+}
+
+.tube.complete .cork {
+  display: block;
+}
+
+.sparkle {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--tw) * -0.3);
+  width: calc(var(--tw) * 0.7);
+  height: calc(var(--tw) * 0.7);
+  color: #ffeb3b;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+  z-index: 4;
+  pointer-events: none;
+}
+
+.sparkle svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Arrastando: destino que aceita a cor brilha. */
+.tube.drop-ok .glass {
+  border-color: #fff59d;
+  box-shadow: 0 0 0 calc(var(--tw) * 0.06) rgba(255, 245, 157, 0.7), 0 8px 18px rgba(0, 0, 0, 0.18);
+}
+
+/* Jorro de líquido. */
+.stream {
+  position: absolute;
+  z-index: 5;
+  width: calc(var(--tw) * 0.16);
+  margin-left: calc(var(--tw) * -0.08);
+  border-radius: calc(var(--tw) * 0.08);
+  background: var(--c);
+  transform-origin: top;
+  pointer-events: none;
+}
+
+/* Dica: a garrafinha certa pula e uma seta mostra onde despejar. */
+.tube.hint .bottle {
+  animation: hop 0.9s ease-in-out infinite;
+}
+
+@keyframes hop {
+  0%,
+  100% {
+    transform: none;
+  }
+  30% {
+    transform: translateY(calc(var(--tw) * -0.35));
+  }
+  50% {
+    transform: none;
+  }
+}
+
+.hint-arrow {
+  position: absolute;
+  z-index: 7;
+  width: calc(var(--tw) * 0.9);
+  height: calc(var(--tw) * 0.9);
+  margin-left: calc(var(--tw) * -0.45);
+  margin-top: calc(var(--tw) * -0.75);
+  color: #ffffff;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+  animation: arrow-bob 0.8s ease-in-out infinite;
+}
+
+.hint-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes arrow-bob {
+  50% {
+    transform: translateY(calc(var(--tw) * 0.2));
+    opacity: 0.7;
+  }
+}
+
+/* Desfazer: desabilitado sem jogadas; pisca quando a fase deu um nó. */
+.btn:disabled {
+  opacity: 0.4;
+}
+
+.btn.undo.pulse {
+  --face: #ffeb3b;
+  --edge: #f9a825;
+  --icon: #e65100;
+  animation: breathe 0.9s ease-in-out infinite;
+}
+
+/* ---------- vitória ---------- */
+
+.win {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.35);
+  animation: fade-in 0.25s ease-out;
+}
+
+.win-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vmin;
+}
+
+.medal {
+  width: clamp(110px, 22vmin, 180px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #43a047;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 0 rgba(0, 0, 0, 0.12);
+  animation: pop-in 0.5s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+}
+
+.medal.trophy {
+  color: #ffb300;
+  background: #fff8e1;
+}
+
+.medal svg {
+  width: 62%;
+  height: 62%;
+}
+
+@keyframes pop-in {
+  from {
+    transform: scale(0) rotate(-20deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.confetti-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  top: -40px;
+  border-radius: 2px;
+}
