@@ -31,6 +31,7 @@ export const ICONS = {
       `<path d="M32 18 L42 30 M42 18 L32 30" ${stroke(4.5)}/>`,
   ),
   down: svg(`<path d="M24 6 V38 M12 27 L24 39 L36 27" ${stroke(7)}/>`),
+  back: svg(`<path d="M39 24 H11 M22 12 L10 24 L22 36" ${stroke(6)}/>`),
   next: svg(`<path d="M9 24 H37 M26 12 L38 24 L26 36" ${stroke(6)}/>`),
   check: svg(`<path d="M11 25 L20 34 L37 15" ${stroke(7)}/>`),
   chevrons: svg(`<path d="M10 12 L22 24 L10 36 M26 12 L38 24 L26 36" ${stroke(6)}/>`),
